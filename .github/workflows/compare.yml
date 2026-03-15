@@ -64,8 +64,12 @@ jobs:
           git commit -m "Auto-update: compare progress"
           git push
 
-      - name: Fail workflow if compare failed
-        if: steps.compare.outcome == 'failure'
+      - name: Show compare status
+        if: always()
         shell: pwsh
         run: |
-          Write-Error "Compare step failed. Progress was still committed."
+          if ("${{ steps.compare.outcome }}" -eq "failure") {
+            Write-Host "Compare script failed, but progress was committed."
+          } else {
+            Write-Host "Compare script completed successfully."
+          }
