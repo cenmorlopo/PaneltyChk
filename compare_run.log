@@ -1702,3 +1702,6 @@
 [2026-03-15T18:25:15.118Z] [1700/1701] 23105167003 | NASRINA KHATUN | subjects=1 | penalty=0 | cleared=1 | still_failed=0 | threshold_fail=0 | missing=0 | manual=0 -> https://beu-bih.ac.in/result-three?name=B.Tech.+2nd+Semester+Examination%2C+2025+%28Old%29&semester=II&session=2025&regNo=23105167003&exam_held=November%2F2025
 [2026-03-15T18:25:16.241Z] [1701/1701] 23105167004 | MEHAR HASSAN | subjects=1 | penalty=1 | cleared=0 | still_failed=0 | threshold_fail=0 | missing=0 | manual=0 -> https://beu-bih.ac.in/result-three?name=B.Tech.+2nd+Semester+Examination%2C+2025+%28Old%29&semester=II&session=2025&regNo=23105167004&exam_held=November%2F2025
 [2026-03-15T18:25:17.151Z] COMPLETE all students finished
+[2026-03-15T19:19:20.076Z] Loaded 1701 students from result_students.txt
+[2026-03-15T19:19:20.079Z] Resuming from lineIndex=1701
+[2026-03-15T19:19:20.079Z] COMPLETE all students finished
