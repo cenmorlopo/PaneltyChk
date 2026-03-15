@@ -1,0 +1,71 @@
+name: BEU Penalty Compare
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */6 * * *"
+
+concurrency:
+  group: beu-penalty-compare
+  cancel-in-progress: false
+
+jobs:
+  compare-data:
+    runs-on: windows-2025
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Ensure base files exist
+        shell: pwsh
+        run: |
+          if (!(Test-Path "compare_state.json")) { '{"lineIndex":0}' | Out-File -Encoding utf8 compare_state.json }
+          if (!(Test-Path "compare_seen.txt")) { New-Item -ItemType File compare_seen.txt | Out-Null }
+          if (!(Test-Path "compare_failed_regnos.txt")) { New-Item -ItemType File compare_failed_regnos.txt | Out-Null }
+          if (!(Test-Path "compare_results.txt")) { "reg_no | student_name | subject_code | subject_name | subject_type | ese_raw | ia | total | expected_grade | actual_grade | status | reason | frontend_link" | Out-File -Encoding utf8 compare_results.txt }
+          if (!(Test-Path "compare_summary.txt")) { New-Item -ItemType File compare_summary.txt | Out-Null }
+          if (!(Test-Path "compare_run.log")) { New-Item -ItemType File compare_run.log | Out-Null }
+
+      - name: Run compare
+        id: compare
+        continue-on-error: true
+        shell: pwsh
+        run: |
+          node compare.js
+
+      - name: Commit and push progress
+        if: always()
+        shell: pwsh
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add compare_results.txt compare_summary.txt compare_run.log compare_state.json compare_seen.txt compare_failed_regnos.txt
+
+          git diff --cached --quiet
+          if ($LASTEXITCODE -eq 0) {
+            Write-Host "No changes to commit."
+            exit 0
+          }
+
+          git commit -m "Auto-update: compare progress"
+          git push
+
+      - name: Fail workflow if compare failed
+        if: steps.compare.outcome == 'failure'
+        shell: pwsh
+        run: |
+          Write-Error "Compare step failed. Progress was still committed."
