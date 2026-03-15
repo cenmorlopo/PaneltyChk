@@ -470,4 +470,57 @@ async function run() {
 
     const subjectResults = processStudent(fetched.data, regNo, backCodes);
     appendOutputRows(subjectResults);
-    appendUnique
+    appendUnique(FILES.seen, seen, regNo);
+
+    summary.studentsProcessed++;
+    summary.subjectRows += subjectResults.length;
+
+    let penaltyCount = 0;
+    let clearedCount = 0;
+    let stillFailedCount = 0;
+    let thresholdFailCount = 0;
+    let missingCount = 0;
+    let manualCount = 0;
+
+    for (const r of subjectResults) {
+      if (r.status === "PENALTY_SUSPECTED") {
+        summary.penalty++;
+        penaltyCount++;
+      } else if (r.status === "NO_PENALTY_CLEARED_CORRECTLY") {
+        summary.cleared++;
+        clearedCount++;
+      } else if (r.status === "NO_PENALTY_STILL_FAILED") {
+        summary.stillFailed++;
+        stillFailedCount++;
+      } else if (r.status === "NO_PENALTY_THRESHOLD_FAIL") {
+        summary.thresholdFail++;
+        thresholdFailCount++;
+      } else if (r.status === "MISSING_IN_NEW_RESULT") {
+        summary.missing++;
+        missingCount++;
+      } else if (r.status === "MANUAL_REVIEW") {
+        summary.manual++;
+        manualCount++;
+      }
+    }
+
+    log(
+      `[${i + 1}/${rows.length}] ${regNo} | ${normalizeText(fetched.data.name)} | ` +
+      `subjects=${subjectResults.length} | penalty=${penaltyCount} | cleared=${clearedCount} | ` +
+      `still_failed=${stillFailedCount} | threshold_fail=${thresholdFailCount} | ` +
+      `missing=${missingCount} | manual=${manualCount} -> ${frontendLink}`
+    );
+
+    saveState(i + 1);
+    writeSummary(summary);
+    await sleep(CONFIG.politeDelayMs);
+  }
+
+  writeSummary(summary);
+  log(`COMPLETE all students finished`);
+}
+
+run().catch(err => {
+  log(`FATAL ${err.stack || err.message}`);
+  process.exit(1);
+});
