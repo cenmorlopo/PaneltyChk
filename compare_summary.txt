@@ -1,0 +1,10 @@
+total_students_in_input = 1701
+students_processed_this_run = 1646
+subject_rows_written_this_run = 2093
+penalty_suspected = 1097
+no_penalty_cleared_correctly = 628
+no_penalty_still_failed = 0
+no_penalty_threshold_fail = 342
+missing_in_new_result = 0
+manual_review = 26
+fetch_errors = 55
