@@ -2605,3 +2605,6 @@
 [2026-03-16T04:54:08.837Z] [2597/2598] 22101165037 | BAMBAM KUMAR | subjects=1 | penalty=1 | cleared=0 | still_failed=0 | threshold_fail=0 | missing=0 | manual=0 -> https://beu-bih.ac.in/result-three?name=B.Tech.+2nd+Semester+Examination%2C+2025+%28Old%29&semester=II&session=2025&regNo=22101165037&exam_held=November%2F2025
 [2026-03-16T04:54:09.987Z] [2598/2598] 22102165002 | ROSHAN MEHTA | subjects=1 | penalty=1 | cleared=0 | still_failed=0 | threshold_fail=0 | missing=0 | manual=0 -> https://beu-bih.ac.in/result-three?name=B.Tech.+2nd+Semester+Examination%2C+2025+%28Old%29&semester=II&session=2025&regNo=22102165002&exam_held=November%2F2025
 [2026-03-16T04:54:10.901Z] COMPLETE all students finished
+[2026-03-16T06:03:54.994Z] Loaded 2598 students from result_students.txt
+[2026-03-16T06:03:54.997Z] Resuming from lineIndex=2598
+[2026-03-16T06:03:54.997Z] COMPLETE all students finished
